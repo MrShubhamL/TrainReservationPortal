@@ -1,76 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{user_base::layout(~{::section})}">
 <head>
     <meta charset="ISO-8859-1">
     <title>E-Trains</title>
 </head>
-<body>
+<body class="backImage">
 <section>
-    <header th:if="${session.user != null}">
-        <h1 class="hd">National Ticket Booking Spot</h1>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_home">Home</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_view_trains">View Trains</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_trainBStation">Trains Between Stations</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_train_booking_details">Ticket Booking History</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_fare_enq_page">Fare Enquiry</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_search_available_seat">Seat Availability</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_search_train">Search By TrainNo</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_profile">Profile</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/logout">Logout</a>
-            </p>
-        </div>
-    </header>
-    <div class="tab">
-        <p class="menu">Fare Enquiry for Trains Between Stations</p>
-    </div>
-    <form action="" th:action="@{/user_do_fare_enq_now}" th:object="${train}" class="tab red" method="post">
-        From Station: <input type="text" name="fromStation" th:value="${train.fromStation}"><br/>
-        <br/> To Station: <input type="text" name="toStation" th:value="${train.toStation}"><br/>
-        <br/> <input type="submit" value=" SEARCH TRAIN "><br/>
-    </form>
-    <br/>
-    <th:block th:if="${session.msg_alert}">
-        <table class="tab brown hd">
-            <tr>
-                <td>[[${session.msg_alert}]]</td>
-            </tr>
-        </table>
-        <th:block th:text="${@sessionService.removeMessageFromSession()}"></th:block>
-    </th:block>
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <h1 class="text-center">Fare Enquiry for Trains Between Stations</h1>
+          </div>
+          <div class="col-lg-8 offset-lg-2 mt-5">
+              <div class="card p-4">
+                  <form action="" th:action="@{/user_do_fare_enq_now}" th:object="${train}" method="post">
+                      From Station: <input type="text" class="form-control" name="fromStation" th:value="${train.fromStation}"><br/>
+                      <br/> To Station: <input type="text" class="form-control" name="toStation" th:value="${train.toStation}"><br/>
+                      <br/> <input type="submit" class="btn btn-outline-primary" value=" SEARCH TRAIN "><br/>
+                  </form>
+              </div>
+          </div>
+          <br/>
+          <th:block th:if="${session.msg_alert}">
+              <table class="tab brown hd">
+                  <tr>
+                      <td>[[${session.msg_alert}]]</td>
+                  </tr>
+              </table>
+              <th:block th:text="${@sessionService.removeMessageFromSession()}"></th:block>
+          </th:block>
+      </div>
+  </div>
 </section>
 </body>
 </html>

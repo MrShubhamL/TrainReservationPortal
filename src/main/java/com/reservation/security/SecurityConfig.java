@@ -73,8 +73,6 @@ public class SecurityConfig{
                 .failureHandler(failureHandler)
                 .successHandler(successHandler)).logout(LogoutConfigurer::permitAll);
         return  http.build();
-
-
     }
 
 }

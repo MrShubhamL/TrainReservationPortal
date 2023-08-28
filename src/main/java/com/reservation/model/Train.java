@@ -3,6 +3,8 @@ package com.reservation.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,4 +21,8 @@ public class Train {
     private String toStation;
     private Integer seats;
     private Double fare;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "train")
+    @ToString.Exclude
+    private List<Reservation> reservations;
 }

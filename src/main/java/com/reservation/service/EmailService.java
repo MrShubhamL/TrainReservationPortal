@@ -17,9 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
+    public static String FROM = "omkarkhade76@gmail.com";
+    public static String PASSWORD = "rrhocuryjgepvkcr";
+
+
     public boolean sendEmail(String subject, String message, String to) {
         boolean f = false;
-        String from = "mr.shubhamlohar952@gmail.com"; // Enter your Email
         String host = "smtp.gmail.com";
 
         Properties properties = System.getProperties();
@@ -37,7 +40,7 @@ public class EmailService {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, "kmqsfnokhstndany"); // Enter your password
+                return new PasswordAuthentication(FROM, PASSWORD); // Enter your password
             }
 
         });
@@ -48,7 +51,7 @@ public class EmailService {
 
         MimeMessage mime = new MimeMessage(session);
         try {
-            mime.setFrom(from);
+            mime.setFrom(FROM);
             mime.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             mime.setSubject(subject);
             MimeMultipart multipart = new MimeMultipart();

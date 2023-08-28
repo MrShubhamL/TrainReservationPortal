@@ -1,96 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{user_base::layout(~{::section})}">
 <head>
     <meta charset="ISO-8859-1">
     <title>E-Trains</title>
 </head>
-<body>
+<body class="backImage">
 <section>
-    <header>
-        <h1 class="hd">National Ticket Booking Spot</h1>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_home">Home</a>
-            </p>
+<div class="container-fluid">
+    <div class="row">
+        <div class='col-lg-12'>
+            <h1 class='text-center'>Running Trains</h1>
         </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_view_trains">View Trains</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_trainBStation">Trains Between Stations</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_train_booking_details">Ticket Booking History</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_fare_enq_page">Fare Enquiry</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_search_available_seat">Seat Availability</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_search_train">Search By TrainNo</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/user_profile">Profile</a>
-            </p>
-        </div>
-        <div class="home">
-            <p class="menu">
-                <a href="/logout">Logout</a>
-            </p>
-        </div>
-    </header>
+        <div class="col-lg-12">
+            <table class="table">
+                <tr>
+                    <th>Train Name</th>
+                    <th>Train Number</th>
+                    <th>From Station</th>
+                    <th>To Station</th>
+                    <th>Time</th>
+                    <th>Seats Available</th>
+                    <th>Fare (INR)</th>
+                    <th>Booking</th>
+                </tr>
+                <tr th:each="item : ${train}">
+                    <td>
+                        <a th:href="@{/user_view_selected_train/{trainNo}(trainNo=${item.trainNo})}"
+                           th:text="${item.trainName}">
+                        </a>
+                    </td>
 
-    <div class='main'>
-        <p1 class='menu'>Running Trains</p1>
+                    <td th:text="${item.trainNo}">train no</td>
+                    <td th:text="${item.fromStation}">from station</td>
+                    <td th:text="${item.toStation}">to station</td>
+                    <td >time</td>
+                    <td th:text="${item.seats}">get seats</td>
+                    <td th:text="${item.fare}">get fare </td>
+                    <td>
+                        <a th:href="@{/user_booked_selected_train/{trainNo}(trainNo=${item.trainNo})}">
+                            <div class='red'>Book Now</div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class='tab'>
-        <table>
-            <tr>
-                <th>Train Name</th>
-                <th>Train Number</th>
-                <th>From Station</th>
-                <th>To Station</th>
-                <th>Time</th>
-                <th>Seats Available</th>
-                <th>Fare (INR)</th>
-                <th>Booking</th>
-            </tr>
-            <tr th:each="item : ${train}">
-                <td>
-                    <a th:href="@{/user_view_selected_train/{trainNo}(trainNo=${item.trainNo})}"
-                       th:text="${item.trainName}">
-                    </a>
-                </td>
-
-                <td th:text="${item.trainNo}">train no</td>
-                <td th:text="${item.fromStation}">from station</td>
-                <td th:text="${item.toStation}">to station</td>
-                <td >time</td>
-                <td th:text="${item.seats}">get seats</td>
-                <td th:text="${item.fare}">get fare </td>
-                <td>
-                    <a th:href="@{/user_booked_selected_train/{trainNo}(trainNo=${item.trainNo})}">
-                        <div class='red'>Book Now</div>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
+</div>
 </section>
 </body>
 </html>

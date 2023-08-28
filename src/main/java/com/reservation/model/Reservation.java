@@ -19,7 +19,9 @@ public class Reservation {
     private String trainBerth;
     private String transactionID;
     private double totalAmount;
-    @OneToOne()
+
+    @ManyToOne()
+    @JoinColumn(name = "train_id")
     private Train train;
 
     @ManyToOne

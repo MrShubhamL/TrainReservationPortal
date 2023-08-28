@@ -42,11 +42,15 @@ public class UserController {
     private EmailService emailService;
 
     private final Reservation reservation = new Reservation();
+    private final Train train = new Train();
     @Autowired
     private TrainRepository trainRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public static String TO = "omkarkhade76@gmail.com";
+
 
     @RequestMapping("/user_home")
     public String home(Model model, Principal principal, HttpSession session) {
@@ -92,12 +96,28 @@ public class UserController {
         String username = principal.getName();
         User user = userRepository.getUserByUsername(username);
         Train trainDetails = trainService.findByTrainNo(trainNo);
+
+        Integer totalSeats = trainDetails.getSeats();
+        String seatCount = res.getSeatNo();
+        int i = Integer.parseInt(seatCount);
+        int totalAvailableSeats = totalSeats-i;
+        System.out.println("Total Available Seats - " + totalAvailableSeats);
+        trainDetails.setSeats(totalAvailableSeats);
+
         reservation.setReservationDate(res.getReservationDate());
         reservation.setSeatNo(res.getSeatNo());
         reservation.setTrainClass(res.getTrainClass());
         reservation.setTrainBerth(res.getTrainBerth());
         reservation.setTransactionID("TRD8346354GGT5566");
         reservation.setTrain(trainDetails);
+        train.setId(trainDetails.getId());
+        train.setSeats(totalAvailableSeats);
+        train.setFare(trainDetails.getFare());
+        train.setTrainName(trainDetails.getTrainName());
+        train.setFromStation(trainDetails.getFromStation());
+        train.setToStation(trainDetails.getToStation());
+        train.setTrainNo(trainDetails.getTrainNo());
+
         List<Reservation> myReservation = new ArrayList<>();
         myReservation.add(reservation);
         user.setReservation(myReservation);
@@ -118,8 +138,9 @@ public class UserController {
             String seatNo = this.reservation.getSeatNo();
             Double fare = this.reservation.getTrain().getFare();
             double seatCount = Double.parseDouble(seatNo);
-            double totalAmount = fare*seatCount;
+            double totalAmount = Math.round(fare*seatCount)*100.0/100.0;
             this.reservation.setTotalAmount(totalAmount);
+            trainService.updateTrain(this.train);
             Reservation reser = reservationService.doReservation(this.reservation);
 
             if(reser == null){
@@ -130,7 +151,7 @@ public class UserController {
             else{
                 System.out.println("Reservation Completed");
                 session.setAttribute("msg_alert","Reservation Successful.");
-                emailService.sendEmail("Train Reservation",
+                emailService.sendEmail("Train Reservation | "+LocalDate.now().toString(),
                         """
                         Your Train Reservation Details \n
                         Passenger Name -"""+user.getFirstName()+ """
@@ -145,7 +166,7 @@ public class UserController {
                     \nReservation Date -"""+this.reservation.getReservationDate()+"""
                     \nTrain Class -"""+this.reservation.getTrainClass()+"""
                     \nTrain Berth Preference -"""+this.reservation.getTrainBerth()+"""
-                    ""","testdata4me@gmail.com");
+                    """,TO);
                 return "redirect:/user_home";
             }
 

@@ -35,6 +35,8 @@ public class HomeController {
 
     public static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
 
+    public static String TO = "omkarkhade76@gmail.com";
+
     @RequestMapping("/")
     public String go_home(Model model) {
         model.addAttribute("title", "Home - Train Reservation Portal");
@@ -131,7 +133,7 @@ public class HomeController {
         Random rand = new Random();
         int i = rand.nextInt(10000);
         MY_GENERATED_OTP = ""+i;
-        emailService.sendEmail("Admin OTP", "Your One-Time Password is - "+MY_GENERATED_OTP, "testdata4me@gmail.com");
+        emailService.sendEmail("Admin OTP", "Your One-Time Password is - "+MY_GENERATED_OTP, TO);
         model.addAttribute("otp", new Otp());
         return "send_OTP";
     }
@@ -143,10 +145,10 @@ public class HomeController {
             User user = new User();
             user.setFirstName("Admin");
             user.setLastName("Dashboard");
-            user.setEmailID("admin@dashboard.com");
+            user.setEmailID("admin@gmail.com");
             user.setContact("986735345");
             user.setAddress("Admin Address");
-            String password = passwordEncoder.encode("admin123");
+            String password = passwordEncoder.encode("admin");
             user.setRole("ROLE_ADMIN");
             user.setEnable(true);
             user.setPassword(password);
@@ -159,7 +161,7 @@ public class HomeController {
                         Your Admin Details \s
                         Username - admin@dashboard.com \n
                         Password - admin123
-                        """, "testdata4me@gmail.com");
+                        """, TO);
                 return "redirect:/home";
             }
             else {
@@ -173,9 +175,9 @@ public class HomeController {
                     model.addAttribute("user", new User());
                     emailService.sendEmail("Admin Credentials", """
                         Your Admin Details \s
-                        Username - admin@dashboard.com \n
-                        Password - admin123
-                        """, "testdata4me@gmail.com");
+                        Username - admin@gmail.com \n
+                        Password - admin
+                        """, TO);
                     return "redirect:/home";
                 }
             }
